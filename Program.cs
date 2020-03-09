@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace csharp_exercises_1
 {
@@ -28,7 +30,79 @@ namespace csharp_exercises_1
             instructor2.Assign(cohort2, exercise3);
             instructor3.Assign(cohort3, exercise4);
 
+            List<Student> students = new List<Student>()
+            {
+                student1,
+                student2,
+                student3,
+                student4,
+            };
 
+            List<Cohort> cohorts = new List<Cohort>()
+            {
+                cohort1,
+                cohort2,
+                cohort3
+            };
+
+            List<Instructor> instructors = new List<Instructor>()
+            {
+                instructor1,
+                instructor2,
+                instructor3
+            };
+
+            List<Exercise> exercises = new List<Exercise>()
+            {
+                exercise1,
+                exercise2,
+                exercise3,
+                exercise4
+            };
+
+            var allJsExercise = exercises.Where(exercise =>
+            {
+                return exercise.Language == "JS";
+            });
+
+            foreach (var exercise in allJsExercise)
+            {
+                Console.WriteLine(exercise.Name);
+            }
+
+            var studentsOrderedByLastName = students.OrderBy(student =>
+            {
+                return student.LastName;
+            });
+
+            foreach (var student in studentsOrderedByLastName)
+            {
+                Console.Write($"{student.FirstName} {student.LastName}");
+            }
+
+            var studentsWithNoExercises = students.Where(student =>
+            {
+                int exercisesCount = student.Exercises.Count;
+                return exercisesCount == 0;
+            });
+
+            Console.WriteLine("These students are not working on any exercises.");
+            foreach (var student in studentsWithNoExercises)
+            {
+                Console.WriteLine($"{student.FirstName} {student.LastName}");
+            }
+
+            var studentsWithMostExercises = students.OrderByDescending(student =>
+            {
+                return student.Exercises.Count;
+            }).FirstOrDefault();
+
+            var groups = students.GroupBy(student => student.Cohort.CohortName);
+
+            foreach (var group in groups)
+            {
+                Console.WriteLine($"There are {group.Count()} students in {group.Key}");
+            }
         }
     }
 }
